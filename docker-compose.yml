@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: upa_postgis
+    environment:
+      POSTGRES_DB: upa_framework
+      POSTGRES_USER: upa
+      POSTGRES_PASSWORD: upa
+    ports:
+      - "5432:5432"
+    volumes:
+      - upa_pgdata:/var/lib/postgresql/data
+
+volumes:
+  upa_pgdata:
