@@ -1,0 +1,39 @@
+# Render blueprint: deploys the Django backend + a managed Postgres database.
+# After connecting the repo to Render, this provisions everything in one click.
+#
+# Frontend lives on Vercel (see vercel.json). Set VITE_API_BASE_URL in Vercel
+# to the Render service URL, e.g. https://upa-backend.onrender.com/api
+services:
+  - type: web
+    name: upa-backend
+    runtime: docker
+    repo: https://github.com/anassa98/fabienk
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: upa-postgres
+          property: connectionString
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false   # set to your Vercel URL after first deploy
+      - key: CSRF_TRUSTED_ORIGINS
+        sync: false
+      - key: SECURE_SSL_REDIRECT
+        value: "True"
+
+databases:
+  - name: upa-postgres
+    plan: free
+    postgresMajorVersion: "16"
+    # Render's Postgres ships with PostGIS available — enable it via the
+    # post-deploy command on the service: `psql $DATABASE_URL -c "CREATE EXTENSION IF NOT EXISTS postgis;"`

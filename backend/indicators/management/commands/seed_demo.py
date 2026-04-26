@@ -15,6 +15,9 @@ from indicators.models import City, Commune, Rooftop
 from indicators.pipeline import run_full_pipeline
 
 
+# Rabat is loaded from the bundled shapefile (`load_rabat_rooftops`).
+# Casablanca and Marrakech are synthetic demo cities until real shapefiles
+# are provided.
 CITIES = [
     {
         "city_code": "CAS",
@@ -24,16 +27,6 @@ CITIES = [
         "rooftop_area_m2": 50_000_000,
         "ground_area_m2": 200_000_000,
         "center": (-7.5898, 33.5731),
-        "annee_creation": 2025,
-    },
-    {
-        "city_code": "RAB",
-        "name": "Rabat",
-        "population": 577_827,
-        "unemployed_population": 98_230,
-        "rooftop_area_m2": 18_000_000,
-        "ground_area_m2": 60_000_000,
-        "center": (-6.8498, 34.0209),
         "annee_creation": 2025,
     },
     {
